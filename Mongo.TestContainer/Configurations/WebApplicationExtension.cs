@@ -1,21 +1,23 @@
 ﻿using System.Diagnostics;
+using Mongo.TestContainer.Services.Interfaces;
 
 namespace Mongo.TestContainer.Configurations;
 
-public static class WebApplicationExtension
+internal static class WebApplicationExtension
 {
-    public static void ConfigureWebApplication(this WebApplication webApplication)
+    public static async Task ConfigureWebApplication(this WebApplication app)
     {
-        webApplication.UseCors("AllowSpecificOrigin");
-        webApplication.UseAuthorization();
-        webApplication.UseStaticFiles();
-        webApplication.MapCustomEndpoints();
-        webApplication.UseExceptionHandler("/error");
-        webApplication.MapControllers();
-        webApplication.Run();
+        app.UseCors("AllowSpecificOrigin");
+        app.UseAuthorization();
+        app.UseStaticFiles();
+        app.MapCustomEndpoints();
+        app.UseExceptionHandler("/error");
+        app.MapControllers();
+        await SeedMongoData(app);
+        app.Run();
     }
 
-    public static void MapCustomEndpoints(this WebApplication webApplication)
+    private static void MapCustomEndpoints(this WebApplication webApplication)
     {
         webApplication.Map("/main", map =>
         {
@@ -32,5 +34,11 @@ public static class WebApplicationExtension
                 appLifetime.StopApplication();
             });
         }
+    }
+
+    private static async Task SeedMongoData(WebApplication app)
+    {
+        var dataSeeder = app.Services.GetRequiredService<IDataSeeder>();
+        await dataSeeder.SeedDataAsync();
     }
 }

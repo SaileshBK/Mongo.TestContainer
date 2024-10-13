@@ -3,7 +3,7 @@ using Mongo.TestContainer.Models.Constants;
 using Mongo.TestContainer.Services.Interfaces;
 using MongoDB.Driver;
 
-namespace Mongo.TestContainer.Services.Services;
+namespace Mongo.TestContainer.Services.Interfaces;
 
 internal sealed class MongoDbService([FromKeyedServices(TestContainerKeys.MongoTestContainerClientKey)] IMongoClient mongoClient) : IMongoDbService
 {

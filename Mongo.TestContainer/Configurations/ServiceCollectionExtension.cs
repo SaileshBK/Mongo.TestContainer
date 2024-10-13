@@ -1,7 +1,7 @@
-﻿using Mongo.TestContainer.Models.Constants;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+using Mongo.TestContainer.Models.Constants;
 using Mongo.TestContainer.Repository;
 using Mongo.TestContainer.Services.Interfaces;
-using Mongo.TestContainer.Services.Services;
 using MongoDB.Driver;
 using Testcontainers.MongoDb;
 
@@ -18,7 +18,7 @@ internal static class ServiceCollectionExtension
     private static async Task RegisterServices(IServiceCollection services)
     {
         await RegisterMongoDbServices(services);
-        services.AddSingleton<IMongoDbService, MongoDbService>();
+        services.TryAddSingleton<IMongoDbService, MongoDbService>();
     }
 
     private static async Task RegisterMongoDbServices(IServiceCollection services)
@@ -33,7 +33,8 @@ internal static class ServiceCollectionExtension
                 _ => throw new InvalidOperationException(ExceptionMessages.InvalidServiceKey)
             };
         });
-        services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
+        services.TryAddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
+        services.TryAddSingleton<IDataSeeder, DataSeeder>();
     }
 
     private static async Task<MongoDbContainer> StartMongoDbCoontainer()
