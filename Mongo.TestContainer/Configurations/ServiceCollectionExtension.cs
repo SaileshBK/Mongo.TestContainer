@@ -24,11 +24,11 @@ internal static class ServiceCollectionExtension
     {
         var mongoContainer = await StartMongoDbCoontainer();
         services.AddKeyedSingleton(mongoContainer, "MongoDbContainer");
-        services.AddKeyedSingleton<IMongoClient, MongoClient>(mongoContainer.GetConnectionString(), (sp, key) =>
+        services.AddKeyedSingleton<IMongoClient, MongoClient>(TestContainerKeys.MongoTestContainerClientKey, (sp, key) =>
         {
             return key switch
             {
-                RegistrationServiceKeys.MongoTestContainerClientKey => new MongoClient(mongoContainer.GetConnectionString()),
+                TestContainerKeys.MongoTestContainerClientKey => new MongoClient(mongoContainer.GetConnectionString()),
                 _ => throw new InvalidOperationException(ExceptionMessages.InvalidServiceKey)
             };
         });
