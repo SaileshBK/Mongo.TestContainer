@@ -12,6 +12,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Mongo.TestContainer.Models\Mongo.TestContainer.Models.csproj" />
+		<ProjectReference Include="..\Mongo.TestContainer.Repository\Mongo.TestContainer.Repository.csproj" />
 		<ProjectReference Include="..\Mongo.TestContainer.Services\Mongo.TestContainer.Services.csproj" />
 	</ItemGroup>
 

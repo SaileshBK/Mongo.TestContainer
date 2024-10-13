@@ -1,24 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
-using Mongo.TestContainer.Models.Constants;
-using Mongo.TestContainer.Models.Database;
 using Mongo.TestContainer.Services.Interfaces;
 using MongoDB.Bson;
-using MongoDB.Driver;
 
 namespace Mongo.TestContainer.Controllers;
 
-public sealed class UserController(IMongoDbService mongoDbService) : ControllerBase
+public sealed class UserController(IMongoRepository<BsonDocument> repository) : ControllerBase
 {
-    private readonly IMongoDbService _mongoDbService = mongoDbService;
+    private readonly IMongoRepository<BsonDocument> _repository = repository;
 
     [HttpGet]
     [Route("api/user-list")]
     public async Task<IActionResult> Get()
     {
-        var database = _mongoDbService.GetDatabase(TestContainerKeys.TestContainerDatabase);
-        var collection = database.GetCollection<BsonDocument>(nameof(UserProfile));
-
-        // Create multiple documents
         var seedData = new List<BsonDocument>()
         {
             new()
@@ -38,13 +31,12 @@ public sealed class UserController(IMongoDbService mongoDbService) : ControllerB
             }
         };
 
-        await collection.InsertManyAsync(seedData);
+        foreach (var item in seedData)
+        {
+            await _repository.AddAsync(item);
+        }
 
-        // Read
-        var filterBuilder = Builders<BsonDocument>.Filter;
-        var filter = filterBuilder.Eq("FirstName", "John");
-        var results = collection.Find(filter).ToList();
-
+        var results = await _repository.GetAllAsync();
         return Ok(results.ToJson());
     }
 }

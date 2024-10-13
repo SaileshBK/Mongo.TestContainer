@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Mongo.TestContainer.Services\Mongo.TestContainer.Services.csproj" />
+  </ItemGroup>
+
 </Project>

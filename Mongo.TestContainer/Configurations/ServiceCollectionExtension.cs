@@ -1,4 +1,5 @@
 ﻿using Mongo.TestContainer.Models.Constants;
+using Mongo.TestContainer.Repository;
 using Mongo.TestContainer.Services.Interfaces;
 using Mongo.TestContainer.Services.Services;
 using MongoDB.Driver;
@@ -32,6 +33,7 @@ internal static class ServiceCollectionExtension
                 _ => throw new InvalidOperationException(ExceptionMessages.InvalidServiceKey)
             };
         });
+        services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
     }
 
     private static async Task<MongoDbContainer> StartMongoDbCoontainer()
