@@ -18,17 +18,32 @@ public sealed class UserController(IMongoDbService mongoDbService) : ControllerB
         var database = _mongoDbService.GetDatabase(TestContainerKeys.TestContainerDatabase);
         var collection = database.GetCollection<BsonDocument>(nameof(UserProfile));
 
-        // Create
-        await collection.InsertOneAsync(new BsonDocument()
+        // Create multiple documents
+        var seedData = new List<BsonDocument>()
         {
-            ["FirstName"] = "John",
-            ["LastName"] = "Doe"
-        });
+            new()
+            {
+                ["FirstName"] = "John",
+                ["LastName"] = "Doe"
+            },
+            new()
+            {
+                ["FirstName"] = "Jane",
+                ["LastName"] = "Doe"
+            },
+            new()
+            {
+                ["FirstName"] = "Michael",
+                ["LastName"] = "Doe"
+            }
+        };
+
+        await collection.InsertManyAsync(seedData);
 
         // Read
         var filterBuilder = Builders<BsonDocument>.Filter;
         var filter = filterBuilder.Eq("FirstName", "John");
-        var results = collection.Find(filter).FirstOrDefault();
+        var results = collection.Find(filter).ToList();
 
         return Ok(results.ToJson());
     }
