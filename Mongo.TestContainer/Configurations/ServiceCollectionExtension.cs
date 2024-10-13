@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Internal.Util;
-using Mongo.TestContainer.Models.Constants;
+﻿using Mongo.TestContainer.Models.Constants;
 using Mongo.TestContainer.Services.Interfaces;
 using Mongo.TestContainer.Services.Services;
 using MongoDB.Driver;

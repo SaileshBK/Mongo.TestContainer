@@ -14,7 +14,7 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Route("api/user-list")]
-    public async Task<IActionResult> Get()
+    public IActionResult Get()
     {
         var test = _mongoDbService.GetDatabase("User");
 
