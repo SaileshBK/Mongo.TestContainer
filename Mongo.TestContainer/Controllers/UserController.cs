@@ -1,22 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
+using Mongo.TestContainer.Models.Constants;
 using Mongo.TestContainer.Services.Interfaces;
+
 
 namespace Mongo.TestContainer.Controllers;
 
-public class UserController : ControllerBase
+public sealed class UserController(IMongoDbService mongoDbService) : ControllerBase
 {
-    private readonly IMongoDbService _mongoDbService;
-
-    public UserController(IMongoDbService mongoDbService)
-    {
-        _mongoDbService = mongoDbService;
-    }
+    private readonly IMongoDbService _mongoDbService = mongoDbService;
 
     [HttpGet]
     [Route("api/user-list")]
     public IActionResult Get()
     {
-        var test = _mongoDbService.GetDatabase("User");
+        var test = _mongoDbService.GetDatabase(TestContainerKeys.TestContainerDatabase);
 
         return Ok("yes");
     }

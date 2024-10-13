@@ -5,7 +5,7 @@ using MongoDB.Driver;
 
 namespace Mongo.TestContainer.Services.Services;
 
-internal sealed class MongoDbService([FromKeyedServices(RegistrationServiceKeys.MongoTestContainerClientKey)] IMongoClient mongoClient) : IMongoDbService
+internal sealed class MongoDbService([FromKeyedServices(TestContainerKeys.MongoTestContainerClientKey)] IMongoClient mongoClient) : IMongoDbService
 {
     private readonly IMongoClient _mongoClient = mongoClient;
 
