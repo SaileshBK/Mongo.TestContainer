@@ -5,7 +5,7 @@ using MongoDB.Driver;
 
 namespace Mongo.TestContainer.Repository;
 
-internal class MongoRepository<T>(IMongoDbService mongoDbService) : IMongoRepository<T> where T : class
+internal sealed class MongoRepository<T>(IMongoDbService mongoDbService) : IMongoRepository<T> where T : class
 {
     private readonly IMongoCollection<T> _collection = mongoDbService
         .GetDatabase(TestContainerKeys.TestContainerDatabase)
