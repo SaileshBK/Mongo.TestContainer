@@ -9,21 +9,21 @@ namespace Mongo.TestContainer.Configurations;
 
 internal static class ServiceCollectionExtension
 {
-    public static async Task ConfigureServices(this IServiceCollection services)
+    public static async Task ConfigureServices(this IServiceCollection services, IConfigurationManager configuration)
     {
         services.AddControllers();
-        await RegisterServices(services);
+        await RegisterServices(services, configuration);
     }
 
-    private static async Task RegisterServices(IServiceCollection services)
+    private static async Task RegisterServices(IServiceCollection services, IConfigurationManager configuration)
     {
-        await RegisterMongoDbServices(services);
+        await RegisterMongoDbServices(services, configuration);
         services.TryAddSingleton<IMongoDbService, MongoDbService>();
     }
 
-    private static async Task RegisterMongoDbServices(IServiceCollection services)
+    private static async Task RegisterMongoDbServices(IServiceCollection services, IConfigurationManager configuration)
     {
-        var mongoContainer = await StartMongoDbCoontainer();
+        var mongoContainer = await StartMongoDbCoontainer(configuration);
         services.AddKeyedSingleton(mongoContainer, "MongoDbContainer");
         services.AddKeyedSingleton<IMongoClient, MongoClient>(TestContainerKeys.MongoTestContainerClientKey, (sp, key) =>
         {
@@ -37,10 +37,10 @@ internal static class ServiceCollectionExtension
         services.TryAddSingleton<IDataSeeder, DataSeeder>();
     }
 
-    private static async Task<MongoDbContainer> StartMongoDbCoontainer()
+    private static async Task<MongoDbContainer> StartMongoDbCoontainer(IConfigurationManager configuration)
     {
         var container = new MongoDbBuilder()
-            .WithImage("mongo:latest")
+            .WithImage(configuration.GetValue<string>("MongoImage") ?? "mongo:latest")
             .Build();
         await container.StartAsync();
         return container;
