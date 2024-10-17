@@ -24,7 +24,7 @@ internal static class ServiceCollectionExtension
     private static async Task RegisterMongoDbServices(IServiceCollection services, IConfigurationManager configuration)
     {
         var mongoContainer = await StartMongoDbCoontainer(configuration);
-        services.AddKeyedSingleton(mongoContainer, "MongoDbContainer");
+        services.AddKeyedSingleton(TestContainerKeys.MongoDbContainerInstanceKey, mongoContainer);
         services.AddKeyedSingleton<IMongoClient, MongoClient>(TestContainerKeys.MongoTestContainerClientKey, (sp, key) =>
         {
             return key switch
