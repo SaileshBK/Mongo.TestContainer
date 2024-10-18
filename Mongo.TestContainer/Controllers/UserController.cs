@@ -4,8 +4,7 @@ using MongoDB.Bson;
 
 namespace Mongo.TestContainer.Controllers;
 
-public sealed class UserController(
-    IMongoRepository<BsonDocument> repository) : ControllerBase
+public sealed class UserController(IMongoRepository<BsonDocument> repository) : ControllerBase
 {
     private readonly IMongoRepository<BsonDocument> _repository = repository;
 
