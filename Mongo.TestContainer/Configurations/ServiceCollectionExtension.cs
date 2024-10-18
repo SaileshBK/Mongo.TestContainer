@@ -23,7 +23,7 @@ internal static class ServiceCollectionExtension
 
     private static async Task RegisterMongoDbServices(IServiceCollection services, IConfigurationManager configuration)
     {
-        var mongoContainer = await StartMongoDbCoontainer(configuration);
+        var mongoContainer = await StartMongoDbContainer(configuration);
         services.AddKeyedSingleton(TestContainerKeys.MongoDbContainerInstanceKey, mongoContainer);
         services.AddKeyedSingleton<IMongoClient, MongoClient>(TestContainerKeys.MongoTestContainerClientKey, (sp, key) =>
         {
@@ -37,7 +37,7 @@ internal static class ServiceCollectionExtension
         services.TryAddSingleton<IDataSeeder, DataSeeder>();
     }
 
-    private static async Task<MongoDbContainer> StartMongoDbCoontainer(IConfigurationManager configuration)
+    private static async Task<MongoDbContainer> StartMongoDbContainer(IConfigurationManager configuration)
     {
         var container = new MongoDbBuilder()
             .WithImage(configuration.GetValue<string>("MongoImage") ?? "mongo:latest")

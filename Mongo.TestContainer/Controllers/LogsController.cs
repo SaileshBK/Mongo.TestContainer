@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mongo.TestContainer.Models.Constants;
-using Mongo.TestContainer.Models.Logs;
 using Testcontainers.MongoDb;
 
 namespace Mongo.TestContainer.Controllers;
@@ -13,7 +12,7 @@ public sealed class LogsController([FromKeyedServices(TestContainerKeys.MongoDbC
     [Route("api/logs")]
     public async Task<IActionResult> GetLogs()
     {
-        var (stdout, stderr) = await _mongoContainer.GetLogsAsync();
-        return Ok(new ContainerLogs(stdout, stderr));
+        var (stdout, _) = await _mongoContainer.GetLogsAsync();
+        return Ok(stdout);
     }
 }
