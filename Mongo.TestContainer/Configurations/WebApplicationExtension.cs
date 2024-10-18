@@ -14,12 +14,13 @@ internal static class WebApplicationExtension
         app.UseExceptionHandler("/error");
         app.MapControllers();
         await SeedMongoData(app);
+        app.UseSwagger();
         app.Run();
     }
 
-    private static void MapCustomEndpoints(this WebApplication webApplication)
+    private static void MapCustomEndpoints(this WebApplication app)
     {
-        webApplication.Map("/main", map =>
+        app.Map("/main", map =>
         {
             map.Run(async context =>
             {
@@ -29,7 +30,7 @@ internal static class WebApplicationExtension
 
         if (Debugger.IsAttached)
         {
-            webApplication.Map("/shutdown", (IHostApplicationLifetime appLifetime) =>
+            app.Map("/shutdown", (IHostApplicationLifetime appLifetime) =>
             {
                 appLifetime.StopApplication();
             });
@@ -40,5 +41,19 @@ internal static class WebApplicationExtension
     {
         var dataSeeder = app.Services.GetRequiredService<IDataSeeder>();
         await dataSeeder.SeedDataAsync();
+    }
+
+    private static void UseSwagger(this WebApplication app)
+    {
+        app.UseSwagger(options =>
+        {
+            options.SerializeAsV2 = true;
+        });
+
+        app.UseSwaggerUI(options =>
+        {
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            options.RoutePrefix = "swagger";
+        });
     }
 }

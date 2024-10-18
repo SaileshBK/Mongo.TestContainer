@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.OpenApi.Models;
 using Mongo.TestContainer.Models.Constants;
 using Mongo.TestContainer.Repository;
 using Mongo.TestContainer.Services.Interfaces;
@@ -12,16 +13,17 @@ internal static class ServiceCollectionExtension
     public static async Task ConfigureServices(this IServiceCollection services, IConfigurationManager configuration)
     {
         services.AddControllers();
-        await RegisterServices(services, configuration);
+        services.AddSwaggerServices();
+        await services.RegisterServices(configuration);
     }
 
-    private static async Task RegisterServices(IServiceCollection services, IConfigurationManager configuration)
+    private static async Task RegisterServices(this IServiceCollection services, IConfigurationManager configuration)
     {
-        await RegisterMongoDbServices(services, configuration);
+        await services.RegisterMongoDbServices(configuration);
         services.TryAddSingleton<IMongoDbService, MongoDbService>();
     }
 
-    private static async Task RegisterMongoDbServices(IServiceCollection services, IConfigurationManager configuration)
+    private static async Task RegisterMongoDbServices(this IServiceCollection services, IConfigurationManager configuration)
     {
         var mongoContainer = await StartMongoDbContainer(configuration);
         services.AddKeyedSingleton(TestContainerKeys.MongoDbContainerInstanceKey, mongoContainer);
@@ -44,5 +46,24 @@ internal static class ServiceCollectionExtension
             .Build();
         await container.StartAsync();
         return container;
+    }
+
+    private static void AddSwaggerServices(this IServiceCollection services)
+    {
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = "Mongo.TestContainer API",
+                Description = "A Web API project using Mongo TestContainer.",
+                Contact = new OpenApiContact
+                {
+                    Name = "Github",
+                    Url = new Uri("https://github.com/SaileshBK/Mongo.TestContainer")
+                }
+            });
+        });
     }
 }
