@@ -10,7 +10,7 @@ public sealed class UserController(IMongoRepository<BsonDocument> repository) : 
 
     [HttpGet]
     [Route("api/user-list")]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetUserList()
     {
         var results = await _repository.GetAllAsync();
         return Ok(results.ToJson());

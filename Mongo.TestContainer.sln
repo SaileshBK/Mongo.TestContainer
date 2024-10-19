@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mongo.TestContainer.Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mongo.TestContainer.Models", "Mongo.TestContainer.Models\Mongo.TestContainer.Models.csproj", "{B687F762-370B-470C-8903-1A25AF78005B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mongo.TestContainer.Repository", "Mongo.TestContainer.Repository\Mongo.TestContainer.Repository.csproj", "{05267D6A-1EB6-498B-B294-EC9631F8DD83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mongo.TestContainer.Repository", "Mongo.TestContainer.Repository\Mongo.TestContainer.Repository.csproj", "{05267D6A-1EB6-498B-B294-EC9631F8DD83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mongo.TestContainer.Tests", "Mongo.TestContainer.Tests\Mongo.TestContainer.Tests.csproj", "{D3754712-0948-4899-A198-AFC502305A33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{05267D6A-1EB6-498B-B294-EC9631F8DD83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05267D6A-1EB6-498B-B294-EC9631F8DD83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05267D6A-1EB6-498B-B294-EC9631F8DD83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3754712-0948-4899-A198-AFC502305A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3754712-0948-4899-A198-AFC502305A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3754712-0948-4899-A198-AFC502305A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3754712-0948-4899-A198-AFC502305A33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
