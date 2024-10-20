@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using Mongo.TestContainer.Models.Constants;
 using Mongo.TestContainer.Repository;
 using Mongo.TestContainer.Services.Interfaces;
+using Mongo.TestContainer.Services.Utilities;
 using MongoDB.Driver;
 using Testcontainers.MongoDb;
 
@@ -43,6 +44,8 @@ internal static class ServiceCollectionExtension
     {
         var container = new MongoDbBuilder()
             .WithImage(configuration.GetValue<string>("MongoImage") ?? "mongo:latest")
+            .WithUsername(RandomUtility.GenerateRandomString(7))
+            .WithPassword(RandomUtility.GenerateRandomString(10))
             .Build();
         await container.StartAsync();
         return container;
